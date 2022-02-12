@@ -13,6 +13,7 @@ app.use(cors());
 app.use("/users", require("./users/user.controller"));
 app.use("/exercises", require("./exercises/exercise.controller"));
 app.use("/target-muscles", require("./targetMuscle/targetMuscle.controller"));
+app.use("/workouts", require("./workouts/workout.controller"));
 // global error handler
 app.use(errorHandler);
 

@@ -8,6 +8,7 @@ module.exports = {
   authenticate,
   getAll,
   getById,
+  getExercise,
   create,
   update,
   delete: _delete,

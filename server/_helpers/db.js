@@ -26,6 +26,8 @@ async function initialize() {
   db.User = require("../users/user.model")(sequelize);
   db.Exercise = require("../exercises/exercise.model")(sequelize);
   db.TargetMuscle = require("../targetMuscle/targetMuscle.model")(sequelize);
+  db.Workout = require("../workouts/workout.model")(sequelize);
+
   // sync all models with database
   await sequelize.sync();
 }
