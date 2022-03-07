@@ -35,7 +35,7 @@ function Header() {
         <Flex justifyContent="space-between" height="100%">
           <Flex alignItems="center">
             <StyledHeading as="h2" size="lg" onClick={() => navigate('/')}>
-              Lunch and Learn
+              Workout Tracker
             </StyledHeading>
           </Flex>
 

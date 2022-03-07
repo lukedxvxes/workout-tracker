@@ -1,5 +1,5 @@
 {
-  "name": "lunchtalks",
+  "name": "workouttracker",
   "version": "1.0.0",
   "description": "- front end: react typescript snowpack emotion chakra react-router-dom - back end: node",
   "main": "index.js",

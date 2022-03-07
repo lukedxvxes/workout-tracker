@@ -81,7 +81,7 @@ function updateSchema(req, res, next) {
 
 function update(req, res, next) {
   userService
-    .update(req.params.id, req.body)
+    .update(req.params.id, req.body, req.user)
     .then((user) => res.json(user))
     .catch(next);
 }

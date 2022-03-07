@@ -4,6 +4,7 @@ module.exports = model;
 
 function model(sequelize) {
   const attributes = {
+    user_id: { type: DataTypes.INTEGER },
     name: { type: DataTypes.STRING, allowNull: false },
     targetMuscle: {
       type: DataTypes.JSON,

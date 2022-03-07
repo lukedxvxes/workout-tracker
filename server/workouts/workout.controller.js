@@ -3,6 +3,7 @@ const router = express.Router();
 const Joi = require("joi");
 const validateRequest = require("_middleware/validate-request");
 const authorize = require("_middleware/authorize");
+const authorizeForWorkout = require("_middleware/authorizeForWorkout");
 const workoutService = require("./workout.service");
 
 // routes
@@ -31,29 +32,9 @@ function add(req, res, next) {
     .catch(next);
 }
 
-function getAll(req, res, next) {
-  workoutService
-    .getAll()
-    .then((workouts) => res.json(workouts))
-    .catch(next);
-}
-
-function getById(req, res, next) {
-  workoutService
-    .getById(req.params.id)
-    .then((workout) => res.json(workout))
-    .catch(next);
-}
-
-function getByWorkoutId(req, res, next) {
-  workoutService
-    .getByWorkoutId(req.params.id)
-    .then((workout) => res.json(workout))
-    .catch(next);
-}
-
 function updateSchema(req, res, next) {
   const schema = Joi.object({
+    exercise: Joi.array().items(Joi.number()),
     reps: Joi.string(),
     weight: Joi.string(),
   });
@@ -62,14 +43,35 @@ function updateSchema(req, res, next) {
 
 function update(req, res, next) {
   workoutService
-    .update(req.params.id, req.body)
+    .update(req.params.id, req.body, req.user)
+    .then(() => res.json({ message: "Workout updated successfully" }))
+    .catch(next);
+}
+
+function getAll(req, res, next) {
+  workoutService
+    .getAll()
+    .then((workouts) => res.json(workouts))
+    .catch(next);
+}
+
+function getByWorkoutId(req, res, next) {
+  workoutService
+    .getByWorkoutId(req.params.id, req.user.id)
     .then((workout) => res.json(workout))
+    .catch(next);
+}
+
+function getById(req, res, next) {
+  workoutService
+    .getById(req.params.id)
+    .then((user) => res.json(user))
     .catch(next);
 }
 
 function _delete(req, res, next) {
   workoutService
-    .delete(req.params.id)
+    .delete(req.params.id, req.user)
     .then(() => res.json({ message: "Workout deleted successfully" }))
     .catch(next);
 }

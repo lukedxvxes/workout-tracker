@@ -46,7 +46,10 @@ async function create(params) {
   await db.User.create(params);
 }
 
-async function update(id, params) {
+async function update(id, params, currentUser) {
+  if (currentUser.id !== id) {
+    throw "You cant update another users account";
+  }
   const user = await getUser(id);
 
   // validate

@@ -2,6 +2,7 @@ const config = require("config.json");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const db = require("_helpers/db");
+const cuid = require("cuid");
 
 const exerciseService = require("../exercises/exercise.service");
 module.exports = {
@@ -38,7 +39,7 @@ async function create(params, user) {
   params.weight = params.weight.trim();
 
   //workoutID
-  params.workout_id = await getMostRecentWorkoutId();
+  params.workout_id = await getMostRecentWorkoutId(user.id);
 
   //user_id
   params.user_id = user.id;
@@ -49,33 +50,50 @@ async function create(params, user) {
   await db.Workout.create(params);
 }
 
-async function update(id, params) {
-  const exercise = await getWorkout(id);
+async function update(id, params, user) {
+  const workout = await getWorkout(id);
+  const exID = parseInt(workout.dataValues.user_id);
 
-  Object.assign(exercise, params);
-  await exercise.save();
+  if (exID !== user.id) {
+    throw "Cant update another users workout";
+  }
 
-  return exercise.get();
+  Object.assign(workout, params);
+  await workout.save();
+
+  return workout.get();
 }
 
-async function _delete(id) {
+async function _delete(id, user) {
   const exercise = await getWorkout(id);
+  const exID = parseInt(exercise.dataValues.user_id);
+  if (exID !== user.id) {
+    throw "Cant delete another users workout";
+  }
+
   await exercise.destroy();
 }
 
 // helper functions
 
 async function getWorkout(id) {
-  const workout = await db.Workout.findByPk(id);
+  const workout = await db.Workout.findOne({
+    where: {
+      id: id,
+    },
+  });
+
   if (!workout) throw "Workout not found";
   return workout;
 }
 
-async function getByWorkoutId(workoutId) {
+async function getByWorkoutId(workoutId, userId) {
   const workouts = await db.Workout.findAll({
-    where: { workout_id: workoutId },
+    where: { workout_id: workoutId, user_id: userId },
   });
-  if (!workouts) throw "Workout not found";
+
+  if (!workouts.length) throw "Workout not found";
+
   return workouts;
 }
 
@@ -83,7 +101,7 @@ async function getExerciseObjArr(ids) {
   const exerciseObjArr = [];
 
   for (const id of ids) {
-    if (!(await db.Exercise.findOne({ where: { id: id } }))) {
+    if (!(await db.Exercise.findOne({ where: { id: parseInt(id) } }))) {
       throw `Exercise ${id} doesnt exist`;
     }
 
@@ -94,16 +112,15 @@ async function getExerciseObjArr(ids) {
   return exerciseObjArr;
 }
 
-async function getMostRecentWorkoutId() {
+async function getMostRecentWorkoutId(userId) {
   //return workout_id - exercises on the same day get the same workout_id
-  // default : 1
 
   let workout_id;
   let mostRecent;
 
   try {
     mostRecent = await db.Workout.findOne({
-      where: { id: !null },
+      where: { user_id: userId },
       order: [["id", "DESC"]],
     });
 
@@ -115,11 +132,11 @@ async function getMostRecentWorkoutId() {
     if (lastEntryDate === todaysDate) {
       workout_id = mostRecent.workout_id;
     } else {
-      workout_id = parseInt(mostRecent.workout_id) + 1;
+      workout_id = cuid();
     }
   } catch (error) {
     mostRecent = null;
-    workout_id = 1;
+    workout_id = cuid();
   }
 
   return workout_id;

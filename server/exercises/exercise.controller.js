@@ -6,7 +6,7 @@ const authorize = require("_middleware/authorize");
 const exerciseService = require("./exercise.service");
 
 // routes
-router.post("/add", addSchema, add);
+router.post("/add", authorize(), addSchema, add);
 router.get("/", authorize(), getAll);
 router.get("/:id", authorize(), getById);
 router.put("/:id", authorize(), updateSchema, update);
@@ -24,7 +24,7 @@ function addSchema(req, res, next) {
 
 function add(req, res, next) {
   exerciseService
-    .create(req.body)
+    .create(req.body, req.user)
     .then(() => res.json({ message: "Exercise added successfully" }))
     .catch(next);
 }
@@ -38,8 +38,8 @@ function getAll(req, res, next) {
 
 function getById(req, res, next) {
   exerciseService
-    .getById(req.params.id)
-    .then((user) => res.json(user))
+    .getById(req.params.id, req.user)
+    .then((exercise) => res.json(exercise))
     .catch(next);
 }
 
@@ -53,14 +53,14 @@ function updateSchema(req, res, next) {
 
 function update(req, res, next) {
   exerciseService
-    .update(req.params.id, req.body)
+    .update(req.params.id, req.body, req.user)
     .then((user) => res.json(user))
     .catch(next);
 }
 
 function _delete(req, res, next) {
   exerciseService
-    .delete(req.params.id)
+    .delete(req.params.id, req.user)
     .then(() => res.json({ message: "Exercise deleted successfully" }))
     .catch(next);
 }

@@ -32,7 +32,7 @@ async function getById(id) {
   return await getExercise(id);
 }
 
-async function create(params) {
+async function create(params, user) {
   //transform name
   params.name = params.name.replace(/ /g, "-").toLowerCase();
   // validate
@@ -53,12 +53,18 @@ async function create(params) {
   }
 
   params.targetMuscle = targetMuscleObjArr;
+  params.user_id = parseInt(user.id);
 
   await db.Exercise.create(params);
 }
 
-async function update(id, params) {
+async function update(id, params, user) {
   const exercise = await getExercise(id);
+
+  const exID = parseInt(exercise.dataValues.user_id);
+  if (exID !== user.id) {
+    throw "Cant update another users exercise";
+  }
 
   Object.assign(exercise, params);
   await exercise.save();
@@ -66,8 +72,13 @@ async function update(id, params) {
   return exercise.get();
 }
 
-async function _delete(id) {
+async function _delete(id, user) {
   const exercise = await getExercise(id);
+
+  const exID = parseInt(exercise.dataValues.user_id);
+  if (exID !== user.id) {
+    throw "Cant delete another users exercise";
+  }
   await exercise.destroy();
 }
 
@@ -75,6 +86,7 @@ async function _delete(id) {
 
 async function getExercise(id) {
   const exercise = await db.Exercise.findByPk(id);
+
   if (!exercise) throw "Exercise not found";
   return exercise;
 }
