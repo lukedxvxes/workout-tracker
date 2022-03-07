@@ -10,21 +10,6 @@ A Javascript web app to track workouts.
 
 - db and api endpoints set up for Users, Exercises, Muscle Groups.
 
-### TODO
-
-- setup api endpoints and db table for workouts
-- Workouts should have the following structure
-  - id
-  - exercise
-  - reps
-  - weight
-  - date
-  - workout_id
-  - user_id
-- Workouts should have the same CRUD endpoints as Exercises or Muscle Groups
-
-- Front end hasnt been started yet.
-
 ### Running Locally
 
 - `npm run dev` in the root folder will boot up both the server and client.
