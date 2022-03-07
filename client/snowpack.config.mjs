@@ -4,6 +4,9 @@ export default {
     public: { url: '/', static: true },
     src: { url: '/dist' },
   },
+  env: {
+    API_URL: 'http://localhost:4000/',
+  },
   plugins: [
     '@snowpack/plugin-react-refresh',
     '@snowpack/plugin-dotenv',
@@ -21,7 +24,7 @@ export default {
   ],
   optimize: {
     /* Example: Bundle your final build: */
-    // "bundle": true,
+    bundle: true,
   },
   packageOptions: {
     /* ... */

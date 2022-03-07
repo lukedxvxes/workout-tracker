@@ -19,18 +19,24 @@ function Header() {
   };
 
   const authedLinks = [
-    <Link to="/profile">Profile</Link>,
-    <Button colorScheme="blue" onClick={logoutUser}>
+    <Link key="profile" to="/profile">
+      Profile
+    </Link>,
+    <Button key="logout" colorScheme="blue" onClick={logoutUser}>
       Logout
     </Button>,
   ];
 
-  const unAuthedLinks = [<Link to="/login">Login</Link>];
+  const unAuthedLinks = [
+    <Link key="login" to="/login">
+      Login
+    </Link>,
+  ];
 
   const links = user ? authedLinks : unAuthedLinks;
 
   return (
-    <StyledHeader bg="blue.800" color="white">
+    <StyledHeader bg="gray.800" color="white">
       <StyledContainer>
         <Flex justifyContent="space-between" height="100%">
           <Flex alignItems="center">
