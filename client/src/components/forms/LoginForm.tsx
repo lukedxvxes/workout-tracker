@@ -29,7 +29,7 @@ export function LoginForm({ setUser }: { setUser: any }) {
 
     try {
       const loginResponse = await fetch(
-        'http://localhost:4000/users/authenticate',
+        'http://localhost:3000/users/authenticate',
         settings,
       );
 

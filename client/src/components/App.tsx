@@ -11,43 +11,18 @@ import Header from './header/Header';
 import { StyledApp, StyledContainer } from './App.styled';
 import { useLogin } from './hooks/useLogin';
 import { useCookies } from 'react-cookie';
+import { useCurrentUser } from '../hooks/useCurrentUser';
 
 interface AppProps {}
-
-const queryClient = new QueryClient();
 
 function App({}: AppProps) {
   const [user, setUser] = useState(null);
   const providerUser = useMemo(() => ({ user, setUser }), [user, setUser]);
-  const [cookies, setCookie] = useCookies(['jwt']);
+  const { isError, error } = useCurrentUser({ setUser });
 
-  const currentUser = useQuery(
-    'current-user',
-    async () => {
-      const headers = {
-        'Content-type': 'application/json',
-        Authorization: `Bearer ${cookies.jwt}`,
-      };
-
-      const res = await fetch('http://localhost:4000/users/current', {
-        headers: headers,
-      });
-
-      if (!res.ok) {
-        throw new Error('Network response was not ok');
-      }
-      const currentUser = await res.json();
-      if (!user) {
-        setUser(currentUser);
-      }
-
-      return currentUser;
-    },
-    {
-      // Refetch the data every second
-      enabled: !!cookies.jwt,
-    },
-  );
+  if (isError) {
+    console.log(`error getting user: ${error}`);
+  }
 
   return (
     <BrowserRouter>

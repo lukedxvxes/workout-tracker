@@ -20,15 +20,3 @@ export function useLogin() {
     return await response.json();
   });
 }
-
-// export function useLoginMutation(email, password) {
-//   return useMutation(async (info) => {
-//     const response = await fetch('http://localhost:4000/authenticate', {
-//       method: 'POST',
-//       headers: { 'Content-Type': 'application/json' },
-//       body: JSON.stringify(info),
-//     });
-
-//     return await response.json();
-//   });
-// }
