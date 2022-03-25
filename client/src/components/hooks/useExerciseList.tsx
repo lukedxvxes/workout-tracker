@@ -2,7 +2,7 @@ import { InputGroup, useToast } from '@chakra-ui/react';
 import { useCookies } from 'react-cookie';
 import { useQuery } from 'react-query';
 import type { ExerciseInterface } from 'src/types';
-import { API_URL } from '../../../CONSTANTS/API';
+import { API_URL } from '../../CONSTANTS/API';
 
 export function useExerciseList() {
   const toast = useToast();

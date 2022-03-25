@@ -1,17 +1,15 @@
-import React, { useState, useMemo, useEffect } from 'react';
-import { QueryClient, QueryClientProvider, useQuery } from 'react-query';
+import React, { useState, useMemo } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Home, Profile, NotFound, Auth } from '../pages';
-import { Box, ChakraProvider, toast } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 
 import { UserContext } from '../context/userContext';
 
 import Header from './header/Header';
 
 import { StyledApp, StyledContainer } from './App.styled';
-import { useLogin } from './hooks/useLogin';
-import { useCookies } from 'react-cookie';
-import { useCurrentUser } from '../hooks/useCurrentUser';
+
+import { useCurrentUser } from './hooks/useCurrentUser';
 
 interface AppProps {}
 

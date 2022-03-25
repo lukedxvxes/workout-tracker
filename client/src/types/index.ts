@@ -13,3 +13,12 @@ export interface ExerciseInterface {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface UserInterface {
+  createdAt: string;
+  firstName: string;
+  id: number;
+  lastName: string;
+  updatedAt: string;
+  username: string;
+}

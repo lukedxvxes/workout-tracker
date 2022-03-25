@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Box, Heading } from '@chakra-ui/react';
-import { useExerciseList } from '../hooks/useExercise/useExerciseList';
+import { useExerciseList } from '../hooks/useExerciseList';
 
 export function Exercises() {
   const { isLoading, isError, data: exerciseData } = useExerciseList();
