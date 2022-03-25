@@ -37,7 +37,7 @@ export function CreateAccountForm({
 
     try {
       const registerResponse = await fetch(
-        'http://localhost:4000/users/register',
+        'http://localhost:3000/users/register',
         settings,
       );
 
