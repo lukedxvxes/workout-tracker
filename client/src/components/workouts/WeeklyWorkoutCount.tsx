@@ -4,6 +4,7 @@ import type { WorkoutInterface } from '../../types';
 import { useWorkoutList } from '../hooks/useWorkoutList';
 import { TARGET_WORKOUTS } from '../utils/constants';
 import { filterNotThisWeek } from '../utils/filters/filterNotThisWeek';
+import { StyledHighlight } from './weeklyWorkoutCount.styled';
 
 export function WeeklyWorkoutCount() {
   const { data, isLoading, isError, error } = useWorkoutList();
@@ -20,10 +21,14 @@ export function WeeklyWorkoutCount() {
   return (
     <Box>
       <Heading size="lg">
-        Workouts complete this week: {workoutsThisWeekCount.length}
+        Workouts complete this week:{' '}
+        <StyledHighlight>{workoutsThisWeekCount.length} </StyledHighlight>
       </Heading>
       <Heading size="lg">
-        Target reached in {TARGET_WORKOUTS - workoutsThisWeekCount.length}{' '}
+        Target reached in{' '}
+        <StyledHighlight>
+          {TARGET_WORKOUTS - workoutsThisWeekCount.length}{' '}
+        </StyledHighlight>
         workouts
       </Heading>
     </Box>
