@@ -1,8 +1,9 @@
 import { useToast } from '@chakra-ui/react';
 import { useCookies } from 'react-cookie';
 import { useQuery } from 'react-query';
-import { API_URL } from 'src/CONSTANTS/API';
-import type { UserInterface } from 'src/types';
+import { API_URL } from '../../CONSTANTS/API';
+import type { UserInterface } from '../../types';
+import { useAuthHeaders } from './useAuthHeaders';
 
 export function useCurrentUser({
   setUser,
@@ -10,16 +11,12 @@ export function useCurrentUser({
   setUser: React.Dispatch<React.SetStateAction<null>>;
 }) {
   const [cookies, setCookie] = useCookies(['jwt']);
+  const headers = useAuthHeaders();
   const toast = useToast();
-  return useQuery<{ documents: UserInterface[] }>(
+  return useQuery<UserInterface[]>(
     ['current-user'],
     async () => {
-      const headers = {
-        'Content-type': 'application/json',
-        Authorization: `Bearer ${cookies.jwt}`,
-      };
-
-      const res = await fetch(`${API_URL}users/current`, {
+      const res = await fetch(`${API_URL}/users/current`, {
         headers: headers,
       });
 

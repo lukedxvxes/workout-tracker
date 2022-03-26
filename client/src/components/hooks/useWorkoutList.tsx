@@ -1,17 +1,16 @@
-import { InputGroup, useToast } from '@chakra-ui/react';
-import { useCookies } from 'react-cookie';
-import { useQuery } from 'react-query';
+import { useToast } from '@chakra-ui/react';
 
+import { useQuery } from 'react-query';
+import type { WorkoutInterface } from '../../types';
 import { API_URL } from '../../CONSTANTS/API';
-import type { ExerciseInterface } from '../../types';
 import { useAuthHeaders } from './useAuthHeaders';
 
-export function useExerciseList() {
+export function useWorkoutList() {
   const toast = useToast();
   const headers = useAuthHeaders();
 
-  return useQuery<ExerciseInterface[]>('exercise-list', async () => {
-    const response = await fetch(`${API_URL}/exercises`, {
+  return useQuery<WorkoutInterface[]>('workout-list', async () => {
+    const response = await fetch(`${API_URL}/workouts`, {
       method: 'GET',
       headers: headers,
     });
@@ -19,7 +18,7 @@ export function useExerciseList() {
     if (!response.ok) {
       toast({
         title: 'Error: ',
-        description: `Could not list exercises`,
+        description: `Could not list workouts`,
         status: 'error',
         duration: 5000,
         isClosable: true,
