@@ -1,7 +1,9 @@
 import { useToast } from '@chakra-ui/react';
+import { useContext } from 'react';
 import { useCookies } from 'react-cookie';
 import { useQuery } from 'react-query';
 import { API_URL } from '../../CONSTANTS/API';
+import { UserContext } from '../../context/userContext';
 import type { UserInterface } from '../../types';
 import { useAuthHeaders } from './useAuthHeaders';
 
@@ -11,13 +13,16 @@ export function useCurrentUser({
   setUser: React.Dispatch<React.SetStateAction<null>>;
 }) {
   const [cookies, setCookie] = useCookies(['jwt']);
-  const headers = useAuthHeaders();
   const toast = useToast();
+
   return useQuery<UserInterface[]>(
     ['current-user'],
     async () => {
       const res = await fetch(`${API_URL}/users/current`, {
-        headers: headers,
+        headers: {
+          'Content-type': 'application/json',
+          Authorization: `Bearer ${cookies.jwt}`,
+        },
       });
 
       if (!res.ok) {
@@ -30,8 +35,8 @@ export function useCurrentUser({
         });
         throw new Error('Network response was not ok');
       }
-
       const userData = await res.json();
+
       setUser(userData);
       return userData;
     },
