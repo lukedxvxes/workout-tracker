@@ -10,8 +10,6 @@ import { UserContext } from '../context/userContext';
 
 export function Home() {
   const { user } = useContext(UserContext);
-  const { isLoading, isError, data: targetMuscleData } = useTargetMuscleList();
-  const { data: workoutData } = useWorkoutList();
 
   return (
     <div className="page home-page">
